@@ -4020,6 +4020,7 @@ Computing Machinery]
     \footnotetextcopyrightpermission{%
       \def\par{\let\par\@par}\parindent\z@\@setthanks}%
   \fi
+  \iffalse %%!! added for CCS submission
   \footnotetextcopyrightpermission{%
     \if@ACM@authordraft
         \raisebox{-2ex}[\z@][\z@]{\makebox[0pt][l]{\large\bfseries 
@@ -4064,12 +4065,14 @@ Computing Machinery]
             \$\@acmPrice\\
             \@formatdoi{\@acmDOI}%
           \else % Conference
-             ACM~ISBN~\@acmISBN
-             \ifx\@acmPrice\@empty.\else\dots\$\@acmPrice\fi\\
-             \@formatdoi{\@acmDOI}%
+             %%! Not supposed to change this, but can't figure out a better way to remove it
+             %% ACM~ISBN~\@acmISBN
+             %% \ifx\@acmPrice\@empty.\else\dots\$\@acmPrice\fi\\
+             %% \@formatdoi{\@acmDOI}%
           \fi
         \fi
       \fi}
+    \fi %%!
   \endgroup
   \setcounter{footnote}{0}%
   \@mkabstract
