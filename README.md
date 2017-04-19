@@ -3,14 +3,9 @@
 Since the new ACM templates do not quite work, this repository is a
 cleaned up version of the template for use in ACM CCS 2017.
 
-For sumbissions to CCS 2017, you need [acmart.cls](/acmart.cls) and
-[ACM-Reference-Format.bst](/ACM-Reference-Format.bst). Your document
-should use:
-
-    \documentclass[sigconf, anonymous]{acmart}
-    \ccsPaper{9999} % TODO: replace with your paper number once obtained
-
-To see an example, look at [ccs-template.tex](/ccs-template.tex).
+For sumbissions to CCS 2017, you will need [acmart.cls](/acmart.cls)
+and [ACM-Reference-Format.bst](/ACM-Reference-Format.bst) and should
+use the template in [ccs-template.tex](/ccs-template.tex).
 
 The page limit for CCS submissions is at most 12 pages body content
 using this format, with any number of additional pages for the
@@ -33,7 +28,8 @@ This is forked from the [2017 ACM Proceedings
 Template](https://www.acm.org/publications/proceedings-template) but
 modified to be easier to use and not require authors to build the
 `.cls` file (which is not included in the ACM distribution)
-themselves. 
+themselves. A few tweaks were made to produce a better output for
+paper submissions.
 
 To keep things small and simple, unnecessary parts of the ACM
 repository have been removed from this repository. If you want
