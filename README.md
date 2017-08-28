@@ -1,3 +1,5 @@
+**This repo is obsolete. It was created for ACM CCS 2017 submissions, and should not be used for final papers or other conferences.**
+
 # Templates for ACM CCS 2017
 
 Since the new ACM templates do not quite work, this repository is a
@@ -20,9 +22,6 @@ chairs without review.  In particular, papers should not use squeezing
 tricks to adjust the (already very dense) ACM paper format, and moving
 discussion of key related work or important definitions to appendices
 may be grounds for rejection.
-
-A camera-ready template will be added here later, once we can get the
-ACM publications people to respond to our emails.
 
 This is forked from the [2017 ACM Proceedings
 Template](https://www.acm.org/publications/proceedings-template) but
