@@ -1,6 +1,6 @@
 **This repo is obsolete. It was created for ACM CCS 2017 submissions, and should not be used for final papers or other conferences.**
 
-# Templates for ACM CCS 2017
+# Templates for ACM CCS 2017 Submissions
 
 Since the new ACM templates do not quite work, this repository is a
 cleaned up version of the template for use in ACM CCS 2017.
