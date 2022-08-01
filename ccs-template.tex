@@ -13,7 +13,7 @@
 %%\ccsPaper{9999} % TODO: replace with your paper number once obtained
 
 \begin{document}
-\title{DiffBOM: Does SBOMs Accurately Reflects File System Status} % TODO: replace with your title
+\title{DiffBOM: Does SBOMs Accurately Reflects File System Status?} % TODO: replace with your title
 
 \begin{abstract}
 Modern IoT devices running embedded Linux often include various software packages providing key functionalities. However, it has been repeatedly shown that by compromising these software packages, attackers can take control of the whole device. A powerful tool against such software supply chain attack is a software bill of material, or SBOM. An accurate SBOM can help users quickly identify and mitigate potentially compromised software package in an IoT device. But whether SBOMs accurately reflects the content of file systems of IoT devices is largely unknown. The goal of this paper is to determine SBOM coverage, defined as the percentage of files in a file system claimed by an SBOM, in common IoT devices running embedded Linux. We develop DiffBOM, a tool that automatically collects package manager information as the SBOM for the device, compares the information against the file system, and outputs metrics about the coverage.\par
