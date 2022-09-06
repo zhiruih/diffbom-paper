@@ -1,0 +1,117 @@
+In this section, we will introduce our idea and implementation of DiffBOM.
+
+\subsection{Properties}
+
+In an ideal world, an SBOM contains information of every and all software
+packages and files present on file systems of embedded IoT devices. However,
+this is not always achievable in the real world due to several factors. For
+example, configuration files are created by some programs when first ran. Often
+times though, such discrepancies are the results of either buggy SBOM
+generation tools or poor practices such as manually loading or changing files.
+These discrepancies inhibit SBOMs' ability of preventing software supply chain
+attacks. Therefore, we derive SBOM coverage, a metric depicting how much of an
+actual file system is described by an SBOM, thus how well an SBOM represents a
+file system. DiffBOM is developed to derive SBOM coverage by comparing an SBOM
+to contents of a corresponding file system. The tool is aware of semantics of
+file systems, SBOMs, and proxies of SBOMs. %More?
+
+\subsection{System Design}
+
+% It should have: compare sbom and actual file system status, and output metrics (explain rational behind all metrics).
+Our implementation of DiffBOM generally follow this three steps: SBOM Parsing, File System Parsing, and Comparison.\par % Get a flow graph here
+
+In SBOM Parsing, the tool gathers the claimed status of file systems from
+SBOMs. The tool is designed to be able to accept major SBOM formats, like SPDX,
+as well as popular proxies of SBOM, such as opkg metadata. With the emergence
+of the idea of providing SBOMs for enhancing supply chain security, we expect
+more and more devices to be shipped with SBOMs. Meanwhile, there are many
+legacy devices with limited manufacture support, and some device makers may be
+slow in adopting SBOMs. Therefore, supporting multiple SBOM formats and proxies
+ensures the tool's ability to analyze file systems of a wide range of IoT
+devices. The tool then correctly read and digest information from different
+SBOM sources, such as package names and their contained file names, and file
+hashes, for the Comparison step.\par
+
+In File System Parsing, the tool parses the actual status of file systems.
+Images pulled from active devices may have additional runtime changes to the
+file systems. For example, in initial user setup for routers, some
+configuration files are changed or created. Thus, analyzing an update package
+is more ideal. Typical IoT devices we analyzed ship system updates as disk
+images. Updates are usually done by the OS or bootloader, writing contents of
+disk images directly to NAND flashes onboard. Thus there must be a procedure of
+extracting file system information from these disk images. Several runtime or
+tmpfs directories, such as /tmp/, /run/, /dev/, and /sys/, are ignored. These
+directories are populated on runtime, so no software packages will be installed
+on them and ignoring them helps minimizing noise in analysis. Then, the file
+hierarchy are organized in trees containing information such as file names and
+file hashes, for comparison with the claimed status of file systems.\par
+
+In Comparison step, the claimed and actual file system status fetched in
+previous steps are compared. The tool analyzes the existence of claimed files
+in the actual file systems, and if possible, compare the hashes of those files.
+It also handle files claimed but do not exist in actual file systems (the
+missing files) and files in actual file systems not claimed by any packages
+(the unclaimed files), and output several metrics on SBOM coverage. We selected
+the following metrics for analysis: the number of ELF files with mismatching
+hashes (the changed ELFs), the number of files claimed by two or more packages
+(the multi-claimed files), the number of missing and unclaimed files, the
+number of symlinks (the unclaimed symlinks), regular (the unclaimed regular),
+and ELF (the unclaimed ELF) files in unclaimed files, and the total number of
+files. The existence of multi-claimed files can signal poorly constructed SBOMs
+or unrepresentative proxies, since a file is unlikely to be installed by
+multiple packages. The number of changed ELFs, and percentage of unclaimed and
+missing files represents the differences between the claimed and actual state
+of file systems in question. We omit counting directories because a claimed
+directory does not mean its contents are claimed, and the image building
+process should create required directories regardless. We further divided the
+number of unclaimed files into symlinks, regular files, and ELF files, because
+an unclaimed ELF file signals a more significant difference, while unclaimed
+regular files and symlinks could be the result of loading custom assets or
+configuration. For example, the manufacture could be loading a custom web
+interface to a file system. Although not an ideal practice, it is not as
+significant as a missing executable file. Similarly, we only check for changed
+ELF files because a changed regular file could commonly be a configuration file
+and not as significant as a modified executable.
+
+\subsection{Implementation}
+
+We implement DiffBOM with Python. Two modules, bomParser, responsible for the
+SBOM Parsing step described above, and fileTree, responsible for File System
+Parsing and part of Comparison step, works with the main DiffBOM code.\par
+
+bomParser currently supports SPDX SBOM format as well as opkg metadata. To
+parse SPDX SBOM, the tool utilizes spdx-tools python package. spdx-tools
+detects format of the SBOM, and outputs an object containing information of all
+packages. bomParser then convert it into a Python dictionary indexed by the the
+package name, where each element is a list of dictionaries containing file
+names and hashes. opkg metadata is contained in a directory. Each package has
+several files associated to it, with the file names consisting of package names
+and several kinds of extension. The file with .list extension lists all files
+associated with the package, thus bomParser reads the content of the file and
+organize the information in the above format. However, opkg does not provide
+any file hash information, so changed file detection has to be omitted.\par
+
+Since different file systems are used for different devices, we chose to
+manually extract the images first using tools such as unsquashfs or
+ubi\_reader. Then fileTree organizes file system information with an n-ary
+tree. Each node uses lists to keep track of all its child nodes, and file name,
+file type, hash, and symlink destination are stored.\par
+
+To conduct the Comparison step, first the tool goes through the tagging step.
+It takes the dictionary generated by bomParser and enumerate all of the
+packages. For each package, each file name is searched in the directory tree
+generated by fileTree, in a linear and depth-first manner. Our implementation
+is not sensitive to performance, so this algorithm is chosen for its
+simplicity. If the file is found, an attribute documenting the package the file
+is belonged to is modified. If the file is not found, a counter of missing file
+is incremented. If the file already has the package name attribute modified,
+the node is added to a set of multi-claimed files. We use set for this purpose
+because a file might be claimed for more than two times Using set avoids error
+caused by multiple counting. If hash is present in SBOM information and the
+file is an ELF file, its hash is also compared and if different, another
+counter for changed ELF files is incremented.\par
+
+After the tagging step, the tool then scans the whole file system tree. It
+recursively goes through each directory in a depth-first manner, counting the
+number of unclaimed files and symlinks. Then all the counters are outputted in
+csv format for analysis.

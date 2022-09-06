@@ -1,0 +1,80 @@
+%Supply chain security -> IoT vulnerable -> work done on pacman but not IoT -> sbom can help -> does sbom provide accurate info
+
+Recent times have seen the emergence of a novel attack vector of software
+called supply chain attack. Instead of targeting the software itself, supply
+chain attacks target dependencies of software for exploitation
+\cite{Review_of_Open_Source, Evaluating_and_Mitigating}. As dependencies often
+works in conjunction with, or act as modules within the target software,
+vulnerable or malicious code from dependencies can be executed even if the
+software itself is not vulnerable or malicious. In addition, modern software
+often depend on various other software packages, which in turn are also
+dependent on several other packages \cite{Evaluating_and_mitigating}, creating
+a large attack surface. Any software package an attacker manages to exploit
+affects the security of all other software packages that are either directly or
+indirectly dependent on it.\par
+
+Supply chain attacks has already be demonstrated to be feasible and
+particularly damaging. One recent example is the Log4j vulnerability. Log4j is
+a popular software package for logging security and performance information on
+various services and applications \cite{CISA}. A serious vulnerability was
+discovered in the software package that allows remote code execution
+\cite{CISA}. Even if the applications and services are not vulnerable, they
+depend on and runs alongside with the exploitable Log4j software package,
+opening doors to potential attacks. The popularity of Log4j affected many
+software packages \cite{CISA_Log4j_List} and its effects could persist for
+years \cite{Review_of_log4j}.\par
+
+Many IoT devices run embedded Linux with various software packages installed to
+perform their functions. Thus they are also susceptible to supply chain
+attacks. Malicious players can compromise or take advantage of vulnerabilities
+in popular software packages used by IoT devices. As compromised software
+packages are pulled and installed while building and installing versions of IoT
+device firmware, devices become vulnerable to attacks. With the increase in
+deployment of IoT devices in critical areas such as healthcare and
+infrastructure, mitigating such attacks becomes critical
+\cite{IoT_Supply_Chain_Attack_Trends}.\par 
+
+Recent works done on software supply chain security have proposed several ways
+of auditing software packages provided by popular package managers such as npm
+and PyPI, thus mitigating such attacks \cite{Taxonomy, Towards_Measure,
+Towards_Using, What_are_npm, Phantom_artifacts}. However, these techniques have
+limited impact in IoT space. Most package managers are designed for personal
+computer or server users. Users or administrators directly specifies packages
+to install, and have complete control over how frequently software updates are
+carried out. The transparency allows users to take actions at moment's notice
+in case of vulnerability. In contrast, IoT devices often ship as a complete
+package, so users are unaware of the software components of devices. Updates
+are often shipped by manufactures as complete image files containing everything
+from bootloader and OS to software packages. These two factors limit user's
+ability to quickly take action with their IoT devices even with knowledge of
+compromised package, and updates addressing such attacks might take longer to
+apply.\par
+
+Software Bill of Materials (SBOMs) could be powerful tools in mitigating supply
+chain attacks on IoT devices. SBOMs exhaustively list all software packages and
+components bundled with devices as well as information such as software version
+\cite{What_is_a_sbom}, thus eliminating the obscurity of installed software
+packages on IoT devices. With accurate knowledge provided by high quality
+SBOMs, users can quickly identify if they are affected by security
+vulnerabilities and take actions accordingly. However, SBOMs must accurately
+and completely reflect statuses of software installed on file systems of IoT
+devices for it to be useful. A poorly constructed SBOM misrepresenting actual
+states of file systems can lead to false positives or false negatives,
+defeating its purpose.\par
+ 
+Therefore, this paper addresses the problem of if SBOMs accurately reflects
+file system status of IoT devices. We define SBOM Coverage as the coverage of
+packages claimed by SBOMs on actual file systems. We propose DiffBOM, a tool
+comparing versions of SBOMs to versions of actual file systems of IoT devices
+and provide several metrics on SBOM coverage over versions.\par
+
+Using DiffBOM, we analyzed versions of selected embedded Linux file systems... \par
+
+This paper is organized as follows. Section 2 of presents underlying ideas on
+software supply chain attacks and SBOMs. Section 3 introduces implementation of
+DiffBOM, followed by section 4 which examines the accurateness of DiffBOM.
+Section 5 and Section 6 describes and analyze our dataset containing different
+versions of IoT device file systems. Section 7 reflects on limitations of
+DiffBOM. Finally, Section 8 presents our conclusion.
+
+
