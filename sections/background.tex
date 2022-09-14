@@ -1,14 +1,14 @@
 %Intrudoce: supply chain attack, software bill of material, SBOM coverage,
 %spdx, proxies of sbom, and...
 \textbf{\textit{Proxies of SBOM:}} Providing SBOMs for IoT devices is not
-common practice. Thus, almost no device in our dataset has available SBOMs for
+common practice currently. Thus, almost no device in our dataset has available SBOMs for
 us to analyze. Thus, proxies, or other on-device information encoding the
 software packages and files present on device, must be used in place of SBOMs
 in our analysis. Although only accounting for packages installed through
 package manager, it proves to be a good proxy to SBOMs, as further demonstrated
 in the Evaluation section of this paper. This enables us to analyze a wide
-range of devices with or without SBOMs. \\ \textbf{\textit{Package managers:}}
-Even in embedded Linux devices where updates are typically carried out by
+range of devices with or without SBOMs. \\
+\textbf{\textit{Package managers:}} Even in embedded Linux devices where updates are typically carried out by
 flashing the whole storage, package managers are used. An example of such
 package manager for embedded Linux is opkg \cite{opkg}. Like all other Linux
 package managers, it automates the installation, management, and update of
