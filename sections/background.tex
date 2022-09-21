@@ -1,19 +1,19 @@
 %Intrudoce: supply chain attack, software bill of material, SBOM coverage,
 %spdx, proxies of sbom, and...
-\textbf{\textit{Proxies of SBOM:}} Providing SBOMs for IoT devices is not
-common practice currently. Thus, almost no device in our dataset has available SBOMs for
-us to analyze. Thus, proxies, or other on-device information encoding the
-software packages and files present on device, must be used in place of SBOMs
-in our analysis. Although only accounting for packages installed through
-package manager, it proves to be a good proxy to SBOMs, as further demonstrated
-in the Evaluation section of this paper. This enables us to analyze a wide
-range of devices with or without SBOMs. \\
-\textbf{\textit{Package managers:}} Even in embedded Linux devices where updates are typically carried out by
+\textbf{\textit{SBOMs:}} Software Bill of Material, or SBOMs, are like hardware bill of materials. In the scope of IoT, they list information about software contents present on devices \cite{What_is_a_sbom}. A popular SBOM format is SPDX. SBOMs in SPDX format can include information such as licences, versions, files in a software package, and file hashes \cite{SPDX_Spec}. With accurate information provided by high quality SBOMs, IoT device users and administrators can quickly identify compomised software packages on their devices, thus mitigating the risk of supply chain attacks. \\
+\textbf{\textit{IoT Device Updates:}} Traditional Linux-running devices such as personal computers or servers typically update on the granularity of software packages. Each time the user commands an update, the package manager searches for and update only outdated software packages. For IoT devices though, over the air (OTA) updates are typical and are usually shipped as firmware images \cite{A_study_of_ota}. The images are directly flashed to onboard ROM or NAND flash. With the more coarse-grained update model, providing accurate SBOMs for each device and update becomes possible. \\
+\textbf{\textit{Package Managers:}} Even in embedded Linux devices where updates are typically carried out by
 flashing the whole storage, package managers are used. An example of such
 package manager for embedded Linux is opkg \cite{opkg}. Like all other Linux
 package managers, it automates the installation, management, and update of
 software packages, though it might not be accessible to the end user.
 Information on installed software packages are stored on the file system,
-providing a convenient and accurate proxy of SBOMs.
-
-
+providing a convenient and accurate proxy of SBOMs. \\
+\textbf{\textit{SBOMs and Package Managers:}} Providing SBOMs for IoT devices is not
+common practice currently. Thus, almost no device in our dataset has available SBOMs for
+us to analyze. Thus, proxies, or other on-device information encoding the
+software packages and files present on device, must be used in place of SBOMs
+in our analysis. Although only accounting for packages installed through
+package manager, package manager metadata proves to be a good proxy to SBOMs, as further demonstrated
+in the Evaluation section of this paper. This enables us to analyze a wide
+range of devices with or without SBOMs.
